@@ -3,7 +3,8 @@ import { Inter, Playfair_Display } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { Navbar } from '@/components/navbar'
 import { Footer } from '@/components/footer'
-import { Toaster } from '@/components/ui/sonner'
+import { ThemeProvider } from '@/components/theme-provider'
+import { ToastProvider } from '@/components/toast-provider'
 import './globals.css'
 
 const inter = Inter({
@@ -53,12 +54,14 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${playfair.variable} bg-background`}>
       <body className="font-sans antialiased">
-        <div className="flex min-h-screen flex-col">
-          <Navbar />
-          <main className="flex-1">{children}</main>
-          <Footer />
-        </div>
-        <Toaster position="bottom-right" />
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <div className="flex min-h-screen flex-col">
+            <Navbar />
+            <main className="flex-1">{children}</main>
+            <Footer />
+          </div>
+          <ToastProvider />
+        </ThemeProvider>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>

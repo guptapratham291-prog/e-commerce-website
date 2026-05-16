@@ -1,6 +1,23 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
+const isBrowser = typeof window !== 'undefined'
+const storage = {
+  getItem: (name: string) => {
+    return isBrowser ? window.localStorage.getItem(name) : null
+  },
+  setItem: (name: string, value: string) => {
+    if (isBrowser) {
+      window.localStorage.setItem(name, value)
+    }
+  },
+  removeItem: (name: string) => {
+    if (isBrowser) {
+      window.localStorage.removeItem(name)
+    }
+  },
+}
+
 // Types
 export interface Product {
   id: number
@@ -111,7 +128,7 @@ export const useCartStore = create<CartState>()(
         return get().items.reduce((count, item) => count + item.quantity, 0)
       },
     }),
-    { name: 'cart-storage' }
+    { name: 'cart-storage', storage }
   )
 )
 
@@ -144,7 +161,7 @@ export const useWishlistStore = create<WishlistState>()(
         return get().items.some((item) => item.id === productId)
       },
     }),
-    { name: 'wishlist-storage' }
+    { name: 'wishlist-storage', storage }
   )
 )
 
@@ -169,7 +186,7 @@ export const useAuthStore = create<AuthState>()(
           user: state.user ? { ...state.user, ...userData } : null,
         })),
     }),
-    { name: 'auth-storage' }
+    { name: 'auth-storage', storage }
   )
 )
 
@@ -193,6 +210,6 @@ export const useOrdersStore = create<OrdersState>()(
           ),
         })),
     }),
-    { name: 'orders-storage' }
+    { name: 'orders-storage', storage }
   )
 )

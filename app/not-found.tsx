@@ -36,14 +36,14 @@ export default function NotFound() {
           </Button>
         </div>
 
-        {/* Go Back Link */}
+        {/* Helpful Action */}
         <div className="mt-8">
           <Link
-            href="javascript:history.back()"
+            href="/"
             className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
-            Go back to previous page
+            Return to home
           </Link>
         </div>
 

@@ -328,3 +328,135 @@ export function getRelatedProducts(product: Product, limit = 4): Product[] {
     .filter((p) => p.category === product.category && p.id !== product.id)
     .slice(0, limit)
 }
+
+export const mockUsers = [
+  {
+    id: 'u1',
+    name: 'Ava Martin',
+    email: 'ava.martin@example.com',
+    role: 'user',
+    phone: '(555) 123-4501',
+    createdAt: '2024-04-01T10:15:00Z',
+    status: 'active',
+  },
+  {
+    id: 'u2',
+    name: 'Mason Lee',
+    email: 'mason.lee@example.com',
+    role: 'user',
+    phone: '(555) 123-4502',
+    createdAt: '2024-03-18T14:30:00Z',
+    status: 'active',
+  },
+  {
+    id: 'u3',
+    name: 'Hannah Patel',
+    email: 'hannah.patel@example.com',
+    role: 'admin',
+    phone: '(555) 123-4503',
+    createdAt: '2023-12-05T09:10:00Z',
+    status: 'active',
+  },
+]
+
+export const mockOrders = [
+  {
+    id: 'o1001',
+    userId: 'u1',
+    total: 289.98,
+    status: 'delivered',
+    createdAt: '2024-05-08T09:30:00Z',
+    shippingAddress: {
+      name: 'Ava Martin',
+      address: '248 Harbor Avenue',
+      city: 'San Diego',
+      state: 'CA',
+      zip: '92101',
+      country: 'USA',
+      phone: '(555) 123-4501',
+      email: 'ava.martin@example.com',
+    },
+    items: [
+      {
+        productId: 1,
+        name: 'Premium Wireless Headphones',
+        image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80',
+        quantity: 1,
+        price: 289.98,
+      },
+    ],
+  },
+  {
+    id: 'o1002',
+    userId: 'u2',
+    total: 539.98,
+    status: 'shipped',
+    createdAt: '2024-05-12T13:45:00Z',
+    shippingAddress: {
+      name: 'Mason Lee',
+      address: '980 Willow Street',
+      city: 'Austin',
+      state: 'TX',
+      zip: '73301',
+      country: 'USA',
+      phone: '(555) 123-4502',
+      email: 'mason.lee@example.com',
+    },
+    items: [
+      {
+        productId: 3,
+        name: 'Minimalist Leather Backpack',
+        image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500&q=80',
+        quantity: 1,
+        price: 189.99,
+      },
+      {
+        productId: 4,
+        name: 'Organic Cotton T-Shirt',
+        image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500&q=80',
+        quantity: 1,
+        price: 39.99,
+      },
+      {
+        productId: 8,
+        name: 'Wireless Charging Pad',
+        image: 'https://images.unsplash.com/photo-1586816879360-004f5b0c51e3?w=500&q=80',
+        quantity: 1,
+        price: 309.99,
+      },
+    ],
+  },
+  {
+    id: 'o1003',
+    userId: 'u2',
+    total: 189.99,
+    status: 'processing',
+    createdAt: '2024-05-15T16:20:00Z',
+    shippingAddress: {
+      name: 'Mason Lee',
+      address: '980 Willow Street',
+      city: 'Austin',
+      state: 'TX',
+      zip: '73301',
+      country: 'USA',
+      phone: '(555) 123-4502',
+      email: 'mason.lee@example.com',
+    },
+    items: [
+      {
+        productId: 4,
+        name: 'Organic Cotton T-Shirt',
+        image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500&q=80',
+        quantity: 2,
+        price: 39.99,
+      },
+      {
+        productId: 6,
+        name: 'Ceramic Pour-Over Coffee Set',
+        image: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=500&q=80',
+        quantity: 1,
+        price: 79.99,
+      },
+    ],
+  },
+]

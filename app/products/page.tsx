@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { Suspense, useState, useEffect, useMemo } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { ProductCard } from '@/components/product-card'
+import { ProductSkeleton } from '@/components/product-skeleton'
 import { products, categories, searchProducts } from '@/lib/data'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
@@ -38,7 +39,7 @@ const sortOptions = [
 
 const ratingFilters = [4, 3, 2, 1]
 
-export default function ProductsPage() {
+function ProductsPageContent() {
   const searchParams = useSearchParams()
   const initialCategory = searchParams.get('category') || ''
   const initialSearch = searchParams.get('search') || ''
@@ -50,6 +51,12 @@ export default function ProductsPage() {
   const [minRating, setMinRating] = useState(0)
   const [currentPage, setCurrentPage] = useState(1)
   const [gridView, setGridView] = useState<'compact' | 'large'>('large')
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => setIsLoading(false), 650)
+    return () => window.clearTimeout(timer)
+  }, [])
 
   const filteredProducts = useMemo(() => {
     let result = [...products]
@@ -370,7 +377,9 @@ export default function ProductsPage() {
             </div>
 
             {/* Products Grid */}
-            {paginatedProducts.length > 0 ? (
+            {isLoading ? (
+              <ProductSkeleton count={8} />
+            ) : paginatedProducts.length > 0 ? (
               <>
                 <div
                   className={`grid gap-4 sm:gap-6 ${
@@ -442,5 +451,19 @@ export default function ProductsPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function ProductsPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-background px-4 py-12">
+          <ProductSkeleton count={8} />
+        </div>
+      }
+    >
+      <ProductsPageContent />
+    </Suspense>
   )
 }

@@ -160,6 +160,10 @@
   }
 }
 
+.glass {
+  @apply border border-white/15 bg-white/70 text-foreground shadow-2xl shadow-slate-950/10 backdrop-blur-xl dark:border-slate-800/60 dark:bg-slate-950/70;
+}
+
 /* Premium scrollbar */
 ::-webkit-scrollbar {
   width: 10px;

@@ -2,6 +2,7 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
+import { toast } from 'react-toastify'
 import { Product, useCartStore, useWishlistStore } from '@/lib/store'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -37,10 +38,17 @@ export function ProductCard({ product, className, featured }: ProductCardProps) 
     e.preventDefault()
     e.stopPropagation()
     addToCart(product)
+    toast.success(`${product.name} added to cart`)
   }
 
   return (
-    <Link href={`/products/${product.id}`} className={cn('group block', className)}>
+    <Link
+      href={`/products/${product.id}`}
+      className={cn(
+        'group block transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-2xl',
+        className
+      )}
+    >
       <div className="relative">
         {/* Image Container */}
         <div

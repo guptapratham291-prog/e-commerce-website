@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
+import { useTheme } from 'next-themes'
 import { useCartStore, useWishlistStore, useAuthStore } from '@/lib/store'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -31,6 +32,8 @@ import {
   LogOut,
   LayoutDashboard,
   ArrowRight,
+  Moon,
+  Sun,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -47,12 +50,24 @@ export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
+  const [mounted, setMounted] = useState(false)
+  const { theme, setTheme, resolvedTheme } = useTheme()
   const { getItemCount } = useCartStore()
   const { items: wishlistItems } = useWishlistStore()
   const { isAuthenticated, user, logout } = useAuthStore()
 
   const cartCount = getItemCount()
   const wishlistCount = wishlistItems.length
+  const activeTheme = theme === 'system' ? resolvedTheme : theme
+
+  useEffect(() => {
+    setMounted(true)
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20)
+    }
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -111,6 +126,17 @@ export function Navbar() {
             </span>
           </Link>
 
+          <form onSubmit={handleSearch} className="hidden flex-1 items-center gap-2 rounded-full border border-border/60 bg-background/70 px-3 py-2 shadow-sm shadow-slate-900/5 backdrop-blur-xl md:flex lg:max-w-xl">
+            <Search className="h-4 w-4 text-muted-foreground" />
+            <Input
+              type="search"
+              placeholder="Search for products, headphones, shoes..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="h-10 border-0 bg-transparent px-2 text-sm placeholder:text-muted-foreground focus-visible:ring-0"
+            />
+          </form>
+
           {/* Desktop Navigation */}
           <nav className="hidden items-center gap-8 lg:flex">
             {navLinks.map((link) => (
@@ -126,6 +152,22 @@ export function Navbar() {
 
           {/* Right Actions */}
           <div className="flex items-center gap-1 sm:gap-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setTheme(activeTheme === 'dark' ? 'light' : 'dark')}
+              aria-label="Toggle theme"
+            >
+              {mounted ? (
+                activeTheme === 'dark' ? (
+                  <Sun className="h-5 w-5" />
+                ) : (
+                  <Moon className="h-5 w-5" />
+                )
+              ) : (
+                <Sun className="h-5 w-5" />
+              )}
+            </Button>
             {/* Search */}
             <Button
               variant="ghost"
